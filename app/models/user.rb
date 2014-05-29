@@ -4,4 +4,5 @@ class User < ActiveRecord::Base
   validates_email_format_of :email
   validates :email, :presence => true
   validates_uniqueness_of :email
+  validates_presence_of :password_digest, :on => :create  
 end

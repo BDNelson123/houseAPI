@@ -66,6 +66,7 @@ GEM
     pg (0.17.1)
     polyglot (0.3.4)
     rack (1.5.2)
+    rack-cors (0.2.9)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.0.3)
@@ -141,6 +142,7 @@ DEPENDENCIES
   factory_girl
   faker
   pg
+  rack-cors
   rails (= 4.0.3)
   rails-api
   rest-client

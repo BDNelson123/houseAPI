@@ -5,6 +5,7 @@ gem 'pg'
 gem 'bcrypt-ruby'
 gem 'validates_email_format_of', :git => 'git://github.com/alexdunae/validates_email_format_of.git'
 gem 'rails-api'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :test, :development do
   gem 'rspec-rails'
