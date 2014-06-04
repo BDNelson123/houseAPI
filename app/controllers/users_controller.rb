@@ -1,11 +1,14 @@
 class UsersController < ApplicationController
   respond_to :json
 
+  before_filter :restrict_access, :only => [:index, :show]
+
   def create
     @user = User.new(user_params)
+    @user.auth_token = User.auth_token
+    
     if @user.save
-      session[:user_id] = @user.id
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created, auth_token: @user.auth_token
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -19,7 +22,7 @@ class UsersController < ApplicationController
 
   def user_params
     _params = params.require(:user).permit(
-      :email, :password, :password_confirmation
+      :email, :password, :password_confirmation, :auth_token
     )
   end
 end

@@ -1,20 +1,13 @@
 class SessionsController < ApplicationController
   respond_to :json
 
-  def create
+  def show
     user = User.find_by_email(params[:email])
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to root_url, notice: "Logged in!"
+      render json: user, auth_token: user.auth_token
     else
-      flash.now.alert = "Email or password is invalid"
-      render "new"
+      render json: { :errors => "Your credentials were not found.  Please try again" }, :status => :unprocessable_entity
     end
-  end
-
-  def destroy
-    session[:user_id] = nil
-    redirect_to root_url, notice: "Logged out!"
   end
 
   def user_params
