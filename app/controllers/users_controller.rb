@@ -4,13 +4,13 @@ class UsersController < ApplicationController
   before_filter :restrict_access, :only => [:index, :show]
 
   def create
-    @user = User.new(user_params)
-    @user.auth_token = User.auth_token
+    user = User.new(user_params)
+    user.auth_token = User.auth_token
     
-    if @user.save
-      render json: @user, status: :created, auth_token: @user.auth_token
+    if user.save
+      render json: user, status: :created, auth_token: user.auth_token, id: user.id
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: user.errors, status: :unprocessable_entity
     end
   end
 

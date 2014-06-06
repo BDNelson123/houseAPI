@@ -12,4 +12,9 @@ class User < ActiveRecord::Base
       return random_token unless User.exists?(auth_token: random_token)
     end
   end
+
+  def self.user_id(token)
+    user = User.find_by_auth_token(token)
+    return user[:id]
+  end
 end
