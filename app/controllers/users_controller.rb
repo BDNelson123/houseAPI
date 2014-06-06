@@ -14,6 +14,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    user = User.find_by_id(params[:id])
+    if user
+      render json: user
+    else
+      render json: { :errors => "This user was not found." }, :status => :unprocessable_entity
+    end
+  end
+
   def index
     render json: User.all
   end
@@ -22,7 +31,7 @@ class UsersController < ApplicationController
 
   def user_params
     _params = params.require(:user).permit(
-      :email, :password, :password_confirmation, :auth_token
+      :email, :password, :password_confirmation, :auth_token, :id
     )
   end
 end
