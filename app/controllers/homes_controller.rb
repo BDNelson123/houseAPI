@@ -1,10 +1,7 @@
 class HomesController < ApplicationController
   respond_to :json
 
-  before_filter :restrict_access, :only => [:create, :new]
-
-  def new
-  end
+  before_filter :restrict_access, :only => [:create]
 
   def create
     home = Home.new(home_params)
@@ -14,6 +11,15 @@ class HomesController < ApplicationController
       render json: home, status: :created, id: home.id
     else
       render json: home.errors, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    home = Home.find_by_id(params[:id])
+    if home
+      render json: home
+    else
+      render json: { :errors => "This home was not found." }, :status => :unprocessable_entity
     end
   end
 
