@@ -8,4 +8,9 @@ class ApplicationController < ActionController::Base
       User.exists?(auth_token: token)
     end
   end
+
+  def request_http_token_authentication(realm = "Application")  
+    self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, "")}")
+    self.__send__ :render, :json => { :error => "You are not authorized to view this page." }.to_json, :status => :unauthorized
+  end
 end
