@@ -25,7 +25,6 @@ class HomesController < ApplicationController
 
   def update
     home = Home.find_by_id(params[:id])
-    home.image = params[:file]
 
     if home.update(home_params_update)
       render json: home, status: :created, id: home.id
@@ -37,14 +36,14 @@ class HomesController < ApplicationController
   private
 
   def home_params
-    _params = params.fetch(:image, {}).require(:home).permit(
-      :id, :address, :address2, :city, :state, :zip, :image
+    _params = params.require(:home).permit(
+      :id, :address, :address2, :city, :state, :zip
     )
   end
 
   def home_params_update
     _params = params.fetch(:image, {}).permit(
-      :id, :address, :address2, :city, :state, :zip, :image
+      :id, :address, :address2, :city, :state, :zip
     )
   end
 end
