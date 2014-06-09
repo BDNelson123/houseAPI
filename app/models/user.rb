@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :homes
   has_secure_password
 
   validates_email_format_of :email
