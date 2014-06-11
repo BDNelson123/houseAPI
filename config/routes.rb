@@ -3,4 +3,5 @@ House::Application.routes.draw do
   resources :sessions
   resources :homes
   resources :images
+  resources :searches
 end

@@ -15,6 +15,10 @@ class ImagesController < ApplicationController
     render json: Image.where(:home_id => params[:id])
   end
 
+  def index
+    render json: Image.where(:user_id => User.user_id(params[:token]))
+  end
+
   def destroy
     image = Image.find_by_id(params[:id])
     image.destroy

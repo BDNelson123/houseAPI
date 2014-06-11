@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :homes
+  has_many :homes, dependent: :destroy
+  has_many :images, dependent: :destroy
   has_secure_password
 
   validates_email_format_of :email

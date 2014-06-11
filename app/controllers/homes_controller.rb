@@ -15,7 +15,8 @@ class HomesController < ApplicationController
   end
 
   def show
-    home = Home.find_by_id(params[:id])
+    home = Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:id => params[:id]).group("homes.id")
+
     if home
       render json: home
     else
@@ -26,23 +27,21 @@ class HomesController < ApplicationController
   def update
     home = Home.find_by_id(params[:id])
 
-    if home.update(home_params_update)
+    if home.update(home_params)
       render json: home, status: :created, id: home.id
     else
       render json: home.errors, status: :unprocessable_entity
     end
   end
 
+  def index
+    render json: Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:user_id => User.user_id(params[:token])).group("homes.id")
+  end
+
   private
 
   def home_params
     _params = params.require(:home).permit(
-      :id, :address, :address2, :city, :state, :zip
-    )
-  end
-
-  def home_params_update
-    _params = params.fetch(:image, {}).permit(
       :id, :address, :address2, :city, :state, :zip
     )
   end
