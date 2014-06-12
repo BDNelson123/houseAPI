@@ -18,11 +18,12 @@ class HomesController < ApplicationController
     if params[:image] == 'false'
       home = Home.find(params[:id])
     else
-      home = Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:id => params[:id]).group("homes.id")
+      home = Home.find(params[:id])
+      home_total = Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:id => params[:id]).group("homes.id")
     end
 
     if home
-      render json: home
+      render json: home_total
     else
       render json: { :errors => "This home was not found." }, :status => :unprocessable_entity
     end
@@ -40,6 +41,10 @@ class HomesController < ApplicationController
 
   def index
     render json: Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:user_id => User.user_id(params[:token])).group("homes.id")
+  end
+
+  def destroy
+    render json: Home.find_by_id(params[:id]).destroy
   end
 
   private
