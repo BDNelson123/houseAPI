@@ -15,11 +15,21 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by_id(params[:id])
+    user = User.find_by_id(User.user_id(params[:id]))
     if user
       render json: user
     else
       render json: { :errors => "This user was not found." }, :status => :unprocessable_entity
+    end
+  end
+
+  def update
+    user = User.find_by_id(User.user_id(params[:id]))
+
+    if user.update(user_params)
+      render json: user, status: :created, auth_token: user.auth_token
+    else
+      render json: user.errors, status: :unprocessable_entity
     end
   end
 
