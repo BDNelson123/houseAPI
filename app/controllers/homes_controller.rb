@@ -1,7 +1,7 @@
 class HomesController < ApplicationController
   respond_to :json
 
-  before_filter :restrict_access, :only => [:create, :update]
+  before_filter :restrict_access, :only => [:create, :update, :destroy]
 
   def create
     home = Home.new(home_params)
