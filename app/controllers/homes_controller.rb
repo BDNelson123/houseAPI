@@ -1,6 +1,8 @@
 class HomesController < ApplicationController
   respond_to :json
 
+  include ActionController::HttpAuthentication::Token
+
   before_filter :restrict_access, :only => [:create, :update, :destroy]
 
   def create
@@ -39,11 +41,17 @@ class HomesController < ApplicationController
   end
 
   def index
-    render json: Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:user_id => User.user_id(params[:token])).group("homes.id")
+    render json: Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:user_id => User.user_id(token_and_options(request))).group("homes.id")
   end
 
   def destroy
-    render json: Home.find_by_id(params[:id]).destroy
+    home = Home.where(:id => params[:id], :user_id => User.user_id(token_and_options(request))).first
+
+    if home
+      render json: home.destroy
+    else
+      render json: { :errors => "Access Denied." }, :status => :unprocessable_entity
+    end
   end
 
   private
