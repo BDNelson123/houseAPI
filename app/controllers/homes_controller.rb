@@ -63,7 +63,7 @@ class HomesController < ApplicationController
 
   def home_params
     _params = params.require(:home).permit(
-      :id, :address, :address2, :city, :state, :zip
+      :id, :address, :address2, :city, :state, :zip, :price
     )
   end
 end
