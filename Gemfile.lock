@@ -148,6 +148,7 @@ DEPENDENCIES
   carrierwave
   factory_girl
   faker
+  nokogiri
   pg
   rack-cors
   rails (= 4.0.3)

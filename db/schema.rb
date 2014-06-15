@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140612151909) do
+ActiveRecord::Schema.define(version: 20140615162142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bids", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "home_id"
+    t.decimal  "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "homes", force: true do |t|
     t.integer  "user_id"
@@ -41,6 +49,28 @@ ActiveRecord::Schema.define(version: 20140612151909) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "auth_token"
+  end
+
+  create_table "zillows", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "home_id"
+    t.integer  "zpid"
+    t.integer  "FIPScounty"
+    t.string   "useCode"
+    t.integer  "taxAssessmentYear"
+    t.decimal  "taxAssessment"
+    t.integer  "yearBuilt"
+    t.integer  "lotSizeSqFt"
+    t.integer  "finishedSqFt"
+    t.decimal  "bathrooms"
+    t.integer  "bedrooms"
+    t.date     "lastSoldDate"
+    t.integer  "lastSoldPrice"
+    t.integer  "zestimate_amount"
+    t.integer  "valuationRange_low"
+    t.integer  "valuationRange_high"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

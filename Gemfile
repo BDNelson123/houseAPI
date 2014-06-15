@@ -8,6 +8,7 @@ gem 'rails-api'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'carrierwave'
 gem 'rmagick'
+gem 'nokogiri', :require => true
 
 group :test, :development do
   gem 'rspec-rails'

@@ -7,12 +7,17 @@ class HomesController < ApplicationController
 
   def create
     home = Home.new(home_params)
-    home.user_id = User.user_id(params[:home][:token])
+    home.user_id = User.user_id(token_and_options(request))
 
-    if home.save
-      render json: home, status: :created, id: home.id
+    if Zillow.check(home_params) != 0
+      render json: { :errors => "This address could not be found in the MLS.  Please make sure you typed it in correctly." }, :status => :unprocessable_entity
     else
-      render json: home.errors, status: :unprocessable_entity
+      if home.save
+        Zillow.createNew(home.user_id, home.id, home_params)
+        render json: home, status: :created, id: home.id
+      else
+        render json: home.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -20,7 +25,7 @@ class HomesController < ApplicationController
     if params[:image] == 'false'
       home = Home.find(params[:id])
     else
-      home = Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:id => params[:id]).group("homes.id")
+      home = Home.joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id").select('homes.*,zillows.*,array_agg(images.image) AS images').where(:id => params[:id]).group("homes.id, zillows.id")
     end
 
     if home
@@ -41,7 +46,7 @@ class HomesController < ApplicationController
   end
 
   def index
-    render json: Home.joins("LEFT JOIN images ON images.home_id = homes.id").select('homes.*,array_agg(images.image) AS images').where(:user_id => User.user_id(token_and_options(request))).group("homes.id")
+    render json: Home.joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id").select('homes.*,zillows.*,array_agg(images.image) AS images').where(:user_id => User.user_id(token_and_options(request))).group("homes.id, zillows.id")
   end
 
   def destroy

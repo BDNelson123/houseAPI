@@ -1,6 +1,7 @@
 class Home < ActiveRecord::Base
   belongs_to :user
   has_many :images, dependent: :destroy
+  has_many :bids
 
   validates :address, :presence => true
   validates :city, :presence => true
