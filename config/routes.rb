@@ -4,4 +4,5 @@ House::Application.routes.draw do
   resources :homes
   resources :images
   resources :searches
+  resources :bids
 end

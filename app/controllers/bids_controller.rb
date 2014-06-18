@@ -3,23 +3,28 @@ class BidsController < ApplicationController
 
   include ActionController::HttpAuthentication::Token
 
-  before_filter :restrict_access
+  before_filter :restrict_access, :only => [:create]
 
   def create
-    bid = User.new(bid_params)
-    user.auth_token = User.auth_token
+    bid = Bid.new(bid_params)
+    bid.user_id = User.user_id(token_and_options(request))
+    bid.home_id = params["home_id"]
     
-    if user.save
-      render json: user, status: :created, auth_token: user.auth_token, id: user.id
+    if bid.save
+      render json: bid, status: :created, id: bid.home_id
     else
-      render json: user.errors, status: :unprocessable_entity
+      render json: bid.errors, status: :unprocessable_entity
     end
+  end
+
+  def show
+    render json: Bid.joins(:user).select("*").where(:home_id => params[:id])
   end
 
   private
 
   def bid_params
-    _params = params.require(:user).permit(
+    _params = params.require(:bid).permit(
       :price
     )
   end

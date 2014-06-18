@@ -25,7 +25,35 @@ class HomesController < ApplicationController
     if params[:image] == 'false'
       home = Home.find(params[:id])
     else
-      home = Home.joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id").select('homes.*,zillows.*,array_agg(images.image) AS images').where(:id => params[:id]).group("homes.id, zillows.id")
+      home = Home.joins("
+        LEFT JOIN 
+          images 
+        ON 
+          images.home_id = homes.id 
+        JOIN 
+          zillows 
+        ON 
+          zillows.home_id = homes.id")
+          .select('
+            homes.*,
+            "zpid",
+            "fipsCounty",
+            "useCode",
+            "taxAssessmentYear",
+            "taxAssessment",
+            "yearBuilt",
+            "lotSizeSqFt",
+            "finishedSqFt",
+            "bathrooms",
+            "bedrooms",
+            "lastSoldDate",
+            "lastSoldPrice",
+            "zestimate_amount",
+            "valuationRange_low",
+            "valuationRange_high",
+            array_agg(images.image) AS images')
+          .where(:id => params[:id])
+          .group("homes.id, zillows.id")
     end
 
     if home

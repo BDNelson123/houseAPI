@@ -4,6 +4,6 @@ class Bid < ActiveRecord::Base
 
   validates :user_id, :presence => true
   validates :home_id, :presence => true
-  validates :bid, :presence => true
-  validates :bid, :format => { :with => /^\d+??(?:\.\d{0,2})?$/ }, :numericality => {:greater_than => 0}
+  validates :price, :presence => true
+  validates :price, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => {:greater_than => 0}
 end
