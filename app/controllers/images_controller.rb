@@ -3,7 +3,7 @@ class ImagesController < ApplicationController
 
   include ActionController::HttpAuthentication::Token
 
-  before_filter :restrict_access, :only => [:create, :delete]
+  before_filter :restrict_access, :only => [:create, :delete, :update]
 
   def create
     image = Image.new(:image => params[:file], :user_id => User.user_id(token_and_options(request)), :home_id => params[:home_id], :klass => params[:klass])
@@ -20,6 +20,19 @@ class ImagesController < ApplicationController
       render json: Image.where(:klass => 'home', :home_id => params[:id])
     else
       render json: Image.where(:klass => 'user', :user_id => User.user_id(params[:id]))
+    end
+  end
+
+  def update
+    if params[:klass] == 'user'
+      old_primary = Image.where(:klass => 'user', :user_id => User.user_id(params[:auth_token]), :primary => true).first.update(:primary => false)
+      new_primary = Image.where(:klass => 'user', :user_id => User.user_id(params[:auth_token]), :id => params[:id]).first.update(:primary => true)
+
+      if new_primary
+        render json: new_primary, status: :created
+      else
+        render json: new_primary.errors, status: :unprocessable_entity
+      end
     end
   end
 
