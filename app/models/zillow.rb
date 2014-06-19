@@ -1,6 +1,6 @@
 class Zillow < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :home
+  belongs_to :user, dependent: :destroy
+  belongs_to :home, dependent: :destroy
 
   @@zillow = 'X1-ZWz1b68wd3f6dn_2uji4'
   @@url = 'http://www.zillow.com/webservice'

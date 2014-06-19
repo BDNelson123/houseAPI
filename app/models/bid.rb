@@ -1,6 +1,6 @@
 class Bid < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :home
+  belongs_to :user, dependent: :destroy
+  belongs_to :home, dependent: :destroy
 
   validates :user_id, :presence => true
   validates :home_id, :presence => true
