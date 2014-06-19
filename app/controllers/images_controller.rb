@@ -6,7 +6,7 @@ class ImagesController < ApplicationController
   before_filter :restrict_access, :only => [:create, :delete]
 
   def create
-    image = Image.new(:image => params[:file], :user_id => User.user_id(token_and_options(request)), :home_id => params[:home_id])
+    image = Image.new(:image => params[:file], :user_id => User.user_id(token_and_options(request)), :home_id => params[:home_id], :klass => params[:klass])
 
     if image.save
       render json: image, status: :created, image: image.image
@@ -16,7 +16,11 @@ class ImagesController < ApplicationController
   end
 
   def show
-    render json: Image.where(:home_id => params[:id])
+    if params[:klass] == 'home'
+      render json: Image.where(:klass => 'home', :home_id => params[:id])
+    else
+      render json: Image.where(:klass => 'user', :user_id => User.user_id(params[:id]))
+    end
   end
 
   def index

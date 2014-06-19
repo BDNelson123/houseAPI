@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618133649) do
+ActiveRecord::Schema.define(version: 20140619180834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 20140618133649) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "home_id"
+    t.string   "klass"
+    t.boolean  "primary"
   end
 
   create_table "users", force: true do |t|
@@ -88,8 +90,8 @@ ActiveRecord::Schema.define(version: 20140618133649) do
     t.decimal  "related_0_taxAssessment"
     t.integer  "related_0_yearBuilt"
     t.integer  "related_0_lotSizeSqFt"
-    t.integer  "related_0_bathrooms"
-    t.decimal  "related_0_bedrooms"
+    t.decimal  "related_0_bathrooms"
+    t.integer  "related_0_bedrooms"
     t.date     "related_0_lastSoldDate"
     t.integer  "related_0_lastSoldPrice"
     t.integer  "related_1_zpid"
@@ -106,8 +108,8 @@ ActiveRecord::Schema.define(version: 20140618133649) do
     t.decimal  "related_1_taxAssessment"
     t.integer  "related_1_yearBuilt"
     t.integer  "related_1_lotSizeSqFt"
-    t.integer  "related_1_bathrooms"
-    t.decimal  "related_1_bedrooms"
+    t.decimal  "related_1_bathrooms"
+    t.integer  "related_1_bedrooms"
     t.date     "related_1_lastSoldDate"
     t.integer  "related_1_lastSoldPrice"
     t.integer  "related_2_zpid"
@@ -124,8 +126,8 @@ ActiveRecord::Schema.define(version: 20140618133649) do
     t.decimal  "related_2_taxAssessment"
     t.integer  "related_2_yearBuilt"
     t.integer  "related_2_lotSizeSqFt"
-    t.integer  "related_2_bathrooms"
-    t.decimal  "related_2_bedrooms"
+    t.decimal  "related_2_bathrooms"
+    t.integer  "related_2_bedrooms"
     t.date     "related_2_lastSoldDate"
     t.integer  "related_2_lastSoldPrice"
     t.integer  "region_id"
