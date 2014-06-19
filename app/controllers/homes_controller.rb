@@ -38,7 +38,7 @@ class HomesController < ApplicationController
   def update
     home = Home.find_by_id(params[:id])
 
-    if home.update(home_params)
+    if home.update(home_params_update)
       render json: home, status: :created, id: home.id
     else
       render json: home.errors, status: :unprocessable_entity
@@ -64,6 +64,12 @@ class HomesController < ApplicationController
   def home_params
     _params = params.require(:home).permit(
       :id, :address, :address2, :city, :state, :zip, :price
+    )
+  end
+
+  def home_params_update
+    _params = params.require(:home).permit(
+      :id, :price
     )
   end
 end
