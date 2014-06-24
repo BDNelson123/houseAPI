@@ -1,0 +1,25 @@
+development:
+  sessions:
+    default:
+      uri: mongodb://bobinfoaple123:EDSW94edsw@kahana.mongohq.com:10021/house_development
+      options:
+  options:
+test:
+  sessions:
+    default:
+      database: house_test
+      hosts:
+        - localhost:27017
+      options:
+        consistency: :strong
+        max_retries: 1
+        retry_interval: 0
+production:
+  sessions:
+    default:
+      database: house_production
+      hosts:
+        - localhost:27017
+      options:
+        raise_not_found_error: false
+  options:
