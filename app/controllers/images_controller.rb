@@ -16,16 +16,14 @@ class ImagesController < ApplicationController
   end
 
   def show
-    if params[:klass] == 'home'
-      render json: Image.where(:klass => 'home', :home_id => params[:id])
-    else
-      render json: Image.where(:klass => 'user', :user_id => User.user_id(params[:id]))
-    end
+    render json: Image.query(params[:klass],params[:id],params[:primary])
   end
 
   def update
     if params[:klass] == 'user'
-      old_primary = Image.where(:klass => 'user', :user_id => User.user_id(params[:auth_token]), :primary => true).first.update(:primary => false)
+      if Image.where(:klass => 'user', :user_id => User.user_id(params[:auth_token]), :primary => true).first
+        old_primary = Image.where(:klass => 'user', :user_id => User.user_id(params[:auth_token]), :primary => true).first.update(:primary => false)
+      end
       new_primary = Image.where(:klass => 'user', :user_id => User.user_id(params[:auth_token]), :id => params[:id]).first.update(:primary => true)
 
       if new_primary

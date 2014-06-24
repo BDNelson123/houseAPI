@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :homes, dependent: :destroy
-  has_many :images, dependent: :destroy
+  has_many :homes
+  has_many :images
   has_many :bids
   has_secure_password
 

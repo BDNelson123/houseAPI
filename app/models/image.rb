@@ -7,4 +7,12 @@ class Image < ActiveRecord::Base
   validates :klass, :presence => true
 
   mount_uploader :image, ImageUploader
+
+  def self.query(klass,id,primary)
+    if primary == true
+      where(:klass => klass, Common.klass(klass) => Common.id(klass,id), :primary => true)
+    else
+      where(:klass => klass, Common.klass(klass) => Common.id(klass,id))
+    end
+  end
 end

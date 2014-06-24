@@ -5,4 +5,5 @@ House::Application.routes.draw do
   resources :images
   resources :searches
   resources :bids
+  resources :messages
 end
