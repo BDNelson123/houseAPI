@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by_id(User.user_id(params[:id]))
+    user = User.find_by_id(params[:id])
     if user
       render json: user
     else
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find_by_id(User.user_id(params[:id]))
+    user = User.find_by_id(params[:id])
 
     if user.update(user_params)
       render json: user, status: :created, auth_token: user.auth_token

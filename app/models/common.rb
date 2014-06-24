@@ -36,14 +36,4 @@ class Common
       return :user_id
     end
   end
-
-  # model: images
-  # purpose: returns the correct foreign_key id since we pass in the api key to get the user_id
-  def self.id(klass,id)
-    if klass == 'home'
-      return id
-    elsif klass == 'user'
-      return User.user_id(id)
-    end
-  end
 end

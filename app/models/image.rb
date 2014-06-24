@@ -8,11 +8,11 @@ class Image < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
 
-  def self.query(klass,id,primary)
-    if primary == true
-      where(:klass => klass, Common.klass(klass) => Common.id(klass,id), :primary => true)
+  def self.query(params)
+    if params[:primary] == 'true'
+      where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id], :primary => true).first
     else
-      where(:klass => klass, Common.klass(klass) => Common.id(klass,id))
+      where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id])
     end
   end
 end
