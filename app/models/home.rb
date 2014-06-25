@@ -31,7 +31,10 @@ class Home < ActiveRecord::Base
     "demographics_medianSingleFamilyHomeValue","demographics_medianCondoValueAmount","demographics_median2BedroomHomeValue",
     "demographics_median3BedroomHomeValue","demographics_median4BedroomHomeValue","demographics_percentHomesDecreasing",
     "demographics_percentListingPriceReduction","demographics_medianListPricePerSqFt","demographics_medianListPrice",
-    "demographics_medianSalePrice","demographics_medianValuePerSqFt","demographics_propertyTax",
+    "demographics_medianSalePrice","demographics_medianValuePerSqFt","demographics_propertyTax", 
+    "updated_roof","updated_exteriorMaterial","updated_heatingSystem",
+    "updated_coolingSystem","updated_appliances","updated_floorCovering",
+    "updated_rooms","updated_architecture","updated_homeDescription",
     array_agg(images.image) AS images') 
   }
   scope :home_joins, -> { joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id") }

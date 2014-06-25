@@ -15,6 +15,7 @@ class Zillow < ActiveRecord::Base
     graph_5 = Nokogiri::XML(open("#{@@url}/GetChart.htm?zws-id=#{@@zillow}&unit-type=dollar&zpid=#{basic.xpath("//result").xpath("zpid").text}&width=300&height=150&chartDuration=5years").read)
     related = Nokogiri::XML(open("#{@@url}/GetDeepComps.htm?zws-id=#{@@zillow}&zpid=#{basic.xpath("//result").xpath("zpid").text}&count=5").read)
     demographic = Nokogiri::XML(open("#{@@url}/GetDemographics.htm?zws-id=#{@@zillow}&regionid=#{basic.xpath("//localRealEstate").xpath("region").attr('id')}").read)
+    details = Nokogiri::XML(open("#{@@url}/GetUpdatedPropertyDetails.htm?zws-id=#{@@zillow}&zpid=#{basic.xpath("//result").xpath("zpid").text}").read)
 
     create(
       "user_id" => user_id,
@@ -114,7 +115,16 @@ class Zillow < ActiveRecord::Base
 	    "demographics_medianListPrice" => Common.exister(demographic.xpath("//pages//attribute//name[text()='Median List Price']/following-sibling::values/city/value")),
 	    "demographics_medianSalePrice" => Common.exister(demographic.xpath("//pages//attribute//name[text()='Median Sale Price']/following-sibling::values/city/value")),
 	    "demographics_medianValuePerSqFt" => Common.exister(demographic.xpath("//pages//attribute//name[text()='Median Value Per Sq Ft']/following-sibling::values/city/value")),
-	    "demographics_propertyTax" => Common.exister(demographic.xpath("//pages//attribute//name[text()='Property Tax']/following-sibling::values/city/value"))
+	    "demographics_propertyTax" => Common.exister(demographic.xpath("//pages//attribute//name[text()='Property Tax']/following-sibling::values/city/value")),
+	    "updated_roof" => Common.exister(details.xpath("//editedFacts").xpath("roof")),
+	    "updated_exteriorMaterial" => Common.exister(details.xpath("//editedFacts").xpath("exteriorMaterial")),
+	    "updated_heatingSystem" => Common.exister(details.xpath("//editedFacts").xpath("heatingSystem")),
+	    "updated_coolingSystem" => Common.exister(details.xpath("//editedFacts").xpath("coolingSystem")),
+	    "updated_appliances" => Common.exister(details.xpath("//editedFacts").xpath("appliances")),
+	    "updated_floorCovering" => Common.exister(details.xpath("//editedFacts").xpath("floorCovering")),
+	    "updated_rooms" => Common.exister(details.xpath("//editedFacts").xpath("rooms")),
+	    "updated_architecture" => Common.exister(details.xpath("//editedFacts").xpath("architecture")),
+	    "updated_homeDescription" => Common.exister(details.xpath("//homeDescription"))
     )
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625205408) do
+ActiveRecord::Schema.define(version: 20140625212535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,6 +155,15 @@ ActiveRecord::Schema.define(version: 20140625205408) do
     t.integer  "demographics_propertyTax"
     t.decimal  "longitude"
     t.decimal  "latitude"
+    t.string   "updated_roof"
+    t.string   "updated_exteriorMaterial"
+    t.string   "updated_heatingSystem"
+    t.string   "updated_coolingSystem"
+    t.string   "updated_appliances"
+    t.string   "updated_floorCovering"
+    t.string   "updated_rooms"
+    t.string   "updated_architecture"
+    t.text     "updated_homeDescription"
   end
 
 end
