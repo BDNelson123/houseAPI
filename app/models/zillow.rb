@@ -22,6 +22,8 @@ class Zillow < ActiveRecord::Base
       "zpid" => Common.exister(basic.xpath("//result").xpath("zpid")),
       "region_id" => Common.exister(basic.xpath("//localRealEstate").xpath("region").attr('id')),
       "region_name" => Common.exister(basic.xpath("//localRealEstate").xpath("region").attr('name')),
+      "longitude" => Common.exister(basic.xpath("//address").xpath("longitude")),
+      "latitude" => Common.exister(basic.xpath("//address").xpath("latitude")),
       "fipsCounty" => Common.exister(basic.xpath("//FIPScounty")),
       "useCode" => Common.exister(basic.xpath("//useCode")),
       "taxAssessmentYear" => Common.exister(basic.xpath("//taxAssessmentYear")),

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140619180834) do
+ActiveRecord::Schema.define(version: 20140625205408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,8 @@ ActiveRecord::Schema.define(version: 20140619180834) do
     t.integer  "demographics_medianSalePrice"
     t.integer  "demographics_medianValuePerSqFt"
     t.integer  "demographics_propertyTax"
+    t.decimal  "longitude"
+    t.decimal  "latitude"
   end
 
 end

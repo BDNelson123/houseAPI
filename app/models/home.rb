@@ -11,7 +11,7 @@ class Home < ActiveRecord::Base
   validates :price, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => {:greater_than => 0}
 
   scope :home_attributes, -> { select('
-    homes.*, "zpid", "fipsCounty", "useCode", "taxAssessmentYear", "taxAssessment", 
+    homes.*, "zpid", "fipsCounty", "useCode", "taxAssessmentYear", "taxAssessment", "longitude", "latitude",
     "yearBuilt", "lotSizeSqFt", "finishedSqFt", "bathrooms", "bedrooms", "lastSoldDate", "lastSoldPrice", "zestimate_amount", 
     "valuationRange_low", "valuationRange_high", "related_0_zpid","related_0_address","related_0_city","related_0_state","related_0_zip","related_0_latitude",
     "related_0_longitude","related_0_valuationRange_low","related_0_valuationRange_high","related_0_zestimate",
