@@ -1,8 +1,6 @@
 class HomesController < ApplicationController
   respond_to :json
-
   include ActionController::HttpAuthentication::Token
-
   before_filter :restrict_access, :only => [:create, :update, :destroy]
 
   def create
@@ -23,9 +21,9 @@ class HomesController < ApplicationController
 
   def show
     if params[:image] == 'false'
-      home = Home.find(params[:id])
+      home = Home.where(:id => params[:id], :active => true, :user_id => User.user_id(token_and_options(request))).first
     else
-      home = Home.home_joins.home_attributes.where(:id => params[:id]).group("homes.id, zillows.id")
+      home = Home.home_joins.home_attributes.where(:id => params[:id], :active => true).group("homes.id, zillows.id")
     end
 
     if home
@@ -36,9 +34,11 @@ class HomesController < ApplicationController
   end
 
   def update
-    home = Home.find_by_id(params[:id])
+    home = Home.joins(:user).where(:id => params[:id], :auth_token => token_and_options(request)).first
 
-    if home.update(home_params_update)
+    if home.blank?
+      render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity
+    elsif home.update(home_params_update)
       render json: home, status: :created, id: home.id
     else
       render json: home.errors, status: :unprocessable_entity
@@ -46,17 +46,7 @@ class HomesController < ApplicationController
   end
 
   def index
-    render json: Home.home_joins.home_attributes.where(:user_id => User.user_id(token_and_options(request))).group("homes.id, zillows.id")
-  end
-
-  def destroy
-    home = Home.where(:id => params[:id], :user_id => User.user_id(token_and_options(request))).first
-
-    if home
-      render json: home.destroy
-    else
-      render json: { :errors => "Access Denied." }, :status => :unprocessable_entity
-    end
+    render json: Home.home_joins.home_attributes.where(:user_id => User.user_id(token_and_options(request)), :active => true).group("homes.id, zillows.id")
   end
 
   private
@@ -69,7 +59,7 @@ class HomesController < ApplicationController
 
   def home_params_update
     _params = params.require(:home).permit(
-      :id, :price
+      :id, :price, :active
     )
   end
 end

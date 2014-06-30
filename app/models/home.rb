@@ -35,6 +35,9 @@ class Home < ActiveRecord::Base
     "updated_roof","updated_exteriorMaterial","updated_heatingSystem",
     "updated_coolingSystem","updated_appliances","updated_floorCovering",
     "updated_rooms","updated_architecture","updated_homeDescription",
+    "related_0_image_1","related_0_image_2","related_0_image_3","related_0_image_4","related_0_image_5",
+    "related_1_image_1","related_1_image_2","related_1_image_3","related_1_image_4","related_1_image_5",
+    "related_2_image_1","related_2_image_2","related_2_image_3","related_2_image_4","related_2_image_5",
     array_agg(images.image) AS images') 
   }
   scope :home_joins, -> { joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id") }

@@ -14,8 +14,6 @@ gem 'tenacity'
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'capybara'
-  gem 'selenium-webdriver'
   gem 'factory_girl'
   gem 'faker'
   gem 'shoulda-matchers'

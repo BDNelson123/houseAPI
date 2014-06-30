@@ -1,0 +1,64 @@
+<Zestimate:zestimate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Zestimate="http://www.zillow.com/static/xsd/Zestimate.xsd" xsi:schemaLocation="http://www.zillow.com/static/xsd/Zestimate.xsd http://www.zillowstatic.com/vstatic/27250be/static/xsd/Zestimate.xsd">
+<request>
+<zpid>48749425</zpid>
+</request>
+<message>
+<text>Request successfully processed</text>
+<code>0</code>
+</message>
+<response>
+<zpid>48749425</zpid>
+<links>
+<homedetails>
+http://www.zillow.com/homedetails/2114-Bigelow-Ave-N-Seattle-WA-98109/48749425_zpid/
+</homedetails>
+<graphsanddata>
+http://www.zillow.com/homedetails/2114-Bigelow-Ave-N-Seattle-WA-98109/48749425_zpid/#charts-and-data
+</graphsanddata>
+<mapthishome>http://www.zillow.com/homes/48749425_zpid/</mapthishome>
+<comparables>http://www.zillow.com/homes/comps/48749425_zpid/</comparables>
+</links>
+<address>
+<street>2114 Bigelow Ave N</street>
+<zipcode>98109</zipcode>
+<city>Seattle</city>
+<state>WA</state>
+<latitude>47.637933</latitude>
+<longitude>-122.347938</longitude>
+</address>
+<zestimate>
+<amount currency="USD">1463963</amount>
+<last-updated>06/24/2014</last-updated>
+<last-updated-empty></last-updated-empty>
+<oneWeekChange deprecated="true"/>
+<valueChange duration="30" currency="USD">72573</valueChange>
+<valuationRange>
+<low currency="USD">1346846</low>
+<high currency="USD">1537161</high>
+</valuationRange>
+<percentile>96</percentile>
+</zestimate>
+<localRealEstate>
+<region id="271856" type="neighborhood" name="East Queen Anne">
+<links>
+<overview>
+http://www.zillow.com/local-info/WA-Seattle/East-Queen-Anne/r_271856/
+</overview>
+<forSaleByOwner>
+http://www.zillow.com/east-queen-anne-seattle-wa/fsbo/
+</forSaleByOwner>
+<forSale>http://www.zillow.com/east-queen-anne-seattle-wa/</forSale>
+</links>
+</region>
+</localRealEstate>
+<regions>
+<zipcode-id>99569</zipcode-id>
+<city-id>16037</city-id>
+<county-id>207</county-id>
+<state-id>59</state-id>
+</regions>
+</response>
+</Zestimate:zestimate>
+<!--
+ H:004  T:9ms  S:878  R:Fri Jun 27 07:31:28 PDT 2014  B:4.0.1549-master.e59ff1d-LIVE-d34bb53-20140626.192553.e59ff1d443601b961f42768fad1b958e8d73bdd9.20140626124252119-origin/master 
+-->

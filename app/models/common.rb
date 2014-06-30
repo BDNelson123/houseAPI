@@ -12,8 +12,12 @@ class Common
   # purpose: zillow sends date as month/day/year, we need it is as year-month-day
   def self.date(date)
     if date.present?
-      date = date.text.split("/")
-      return "#{date[2]}-#{date[0]}-#{date[1]}"
+      if date.text == ''
+        return nil
+      else
+        date = date.text.split("/")
+        return "#{date[2]}-#{date[0]}-#{date[1]}"
+      end
     end
     return nil
   end

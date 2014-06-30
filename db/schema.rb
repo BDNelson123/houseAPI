@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625212535) do
+ActiveRecord::Schema.define(version: 20140630205428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20140625212535) do
     t.datetime "updated_at"
     t.integer  "zip"
     t.decimal  "price"
+    t.boolean  "active",     default: true
   end
 
   create_table "images", force: true do |t|
@@ -52,6 +53,9 @@ ActiveRecord::Schema.define(version: 20140625212535) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "auth_token"
+    t.string   "firstname"
+    t.string   "lastname"
+    t.boolean  "active"
   end
 
   create_table "zillows", force: true do |t|
@@ -164,6 +168,26 @@ ActiveRecord::Schema.define(version: 20140625212535) do
     t.string   "updated_rooms"
     t.string   "updated_architecture"
     t.text     "updated_homeDescription"
+    t.string   "updated_image_1"
+    t.string   "updated_image_2"
+    t.string   "updated_image_3"
+    t.string   "updated_image_4"
+    t.string   "updated_image_5"
+    t.string   "related_0_image_1"
+    t.string   "related_0_image_2"
+    t.string   "related_0_image_3"
+    t.string   "related_0_image_4"
+    t.string   "related_0_image_5"
+    t.string   "related_1_image_1"
+    t.string   "related_1_image_2"
+    t.string   "related_1_image_3"
+    t.string   "related_1_image_4"
+    t.string   "related_1_image_5"
+    t.string   "related_2_image_1"
+    t.string   "related_2_image_2"
+    t.string   "related_2_image_3"
+    t.string   "related_2_image_4"
+    t.string   "related_2_image_5"
   end
 
 end

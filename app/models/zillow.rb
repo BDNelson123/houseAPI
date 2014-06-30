@@ -17,6 +17,10 @@ class Zillow < ActiveRecord::Base
     demographic = Nokogiri::XML(open("#{@@url}/GetDemographics.htm?zws-id=#{@@zillow}&regionid=#{basic.xpath("//localRealEstate").xpath("region").attr('id')}").read)
     details = Nokogiri::XML(open("#{@@url}/GetUpdatedPropertyDetails.htm?zws-id=#{@@zillow}&zpid=#{basic.xpath("//result").xpath("zpid").text}").read)
 
+    details_related_0 = Nokogiri::XML(open("#{@@url}/GetUpdatedPropertyDetails.htm?zws-id=#{@@zillow}&zpid=#{Common.exister(related.xpath("//comp").xpath("zpid").children[0])}").read)
+    details_related_1 = Nokogiri::XML(open("#{@@url}/GetUpdatedPropertyDetails.htm?zws-id=#{@@zillow}&zpid=#{Common.exister(related.xpath("//comp").xpath("zpid").children[1])}").read)
+    details_related_2 = Nokogiri::XML(open("#{@@url}/GetUpdatedPropertyDetails.htm?zws-id=#{@@zillow}&zpid=#{Common.exister(related.xpath("//comp").xpath("zpid").children[2])}").read)
+
     create(
       "user_id" => user_id,
       "home_id" => home_id,
@@ -59,6 +63,11 @@ class Zillow < ActiveRecord::Base
 	    "related_0_bedrooms" => Common.exister(related.xpath("//comp").xpath("bedrooms").children[0]),
 	    "related_0_lastSoldDate" => Common.date(related.xpath("//comp").xpath("lastSoldDate").children[0]),
 	    "related_0_lastSoldPrice" => Common.exister(related.xpath("//comp").xpath("lastSoldPrice").children[0]),
+	    "related_0_image_1" => Common.exister(details_related_0.xpath("//images").xpath("image").xpath("url").children[0]),
+	    "related_0_image_2" => Common.exister(details_related_0.xpath("//images").xpath("image").xpath("url").children[1]),
+	    "related_0_image_3" => Common.exister(details_related_0.xpath("//images").xpath("image").xpath("url").children[2]),
+	    "related_0_image_4" => Common.exister(details_related_0.xpath("//images").xpath("image").xpath("url").children[3]),
+	    "related_0_image_5" => Common.exister(details_related_0.xpath("//images").xpath("image").xpath("url").children[4]),
 	    "related_1_zpid" => Common.exister(related.xpath("//comp").xpath("zpid").children[1]),
 	    "related_1_address" => Common.exister(related.xpath("//comp").xpath("address").xpath("street").children[1]),
 	    "related_1_city" => Common.exister(related.xpath("//comp").xpath("address").xpath("city").children[1]),
@@ -77,6 +86,11 @@ class Zillow < ActiveRecord::Base
 	    "related_1_bedrooms" => Common.exister(related.xpath("//comp").xpath("bedrooms").children[1]),
 	    "related_1_lastSoldDate" => Common.date(related.xpath("//comp").xpath("lastSoldDate").children[1]),
 	    "related_1_lastSoldPrice" => Common.exister(related.xpath("//comp").xpath("lastSoldPrice").children[1]),
+	    "related_1_image_1" => Common.exister(details_related_1.xpath("//images").xpath("image").xpath("url").children[0]),
+	    "related_1_image_2" => Common.exister(details_related_1.xpath("//images").xpath("image").xpath("url").children[1]),
+	    "related_1_image_3" => Common.exister(details_related_1.xpath("//images").xpath("image").xpath("url").children[2]),
+	    "related_1_image_4" => Common.exister(details_related_1.xpath("//images").xpath("image").xpath("url").children[3]),
+	    "related_1_image_5" => Common.exister(details_related_1.xpath("//images").xpath("image").xpath("url").children[4]),
 	    "related_2_zpid" => Common.exister(related.xpath("//comp").xpath("zpid").children[2]),
 	    "related_2_address" => Common.exister(related.xpath("//comp").xpath("address").xpath("street").children[2]),
 	    "related_2_city" => Common.exister(related.xpath("//comp").xpath("address").xpath("city").children[2]),
@@ -95,6 +109,11 @@ class Zillow < ActiveRecord::Base
 	    "related_2_bedrooms" => Common.exister(related.xpath("//comp").xpath("bedrooms").children[2]),
 	    "related_2_lastSoldDate" => Common.date(related.xpath("//comp").xpath("lastSoldDate").children[2]),
 	    "related_2_lastSoldPrice" => Common.exister(related.xpath("//comp").xpath("lastSoldPrice").children[2]),
+	    "related_2_image_1" => Common.exister(details_related_2.xpath("//images").xpath("image").xpath("url").children[0]),
+	    "related_2_image_2" => Common.exister(details_related_2.xpath("//images").xpath("image").xpath("url").children[1]),
+	    "related_2_image_3" => Common.exister(details_related_2.xpath("//images").xpath("image").xpath("url").children[2]),
+	    "related_2_image_4" => Common.exister(details_related_2.xpath("//images").xpath("image").xpath("url").children[3]),
+	    "related_2_image_5" => Common.exister(details_related_2.xpath("//images").xpath("image").xpath("url").children[4]),
 	    "demographics_medianCondoValue" => Common.exister(demographic.xpath("//charts").xpath("chart").xpath("url").children[0]),
 	    "demographics_medianHomeValue" => Common.exister(demographic.xpath("//charts").xpath("chart").xpath("url").children[1]),
 	    "demographics_dollarsPerSquareFeet" => Common.exister(demographic.xpath("//charts").xpath("chart").xpath("url").children[2]),
@@ -124,7 +143,12 @@ class Zillow < ActiveRecord::Base
 	    "updated_floorCovering" => Common.exister(details.xpath("//editedFacts").xpath("floorCovering")),
 	    "updated_rooms" => Common.exister(details.xpath("//editedFacts").xpath("rooms")),
 	    "updated_architecture" => Common.exister(details.xpath("//editedFacts").xpath("architecture")),
-	    "updated_homeDescription" => Common.exister(details.xpath("//homeDescription"))
+	    "updated_homeDescription" => Common.exister(details.xpath("//homeDescription")),
+	    "updated_image_1" => Common.exister(details.xpath("//images").xpath("image").xpath("url").children[0]),
+	    "updated_image_2" => Common.exister(details.xpath("//images").xpath("image").xpath("url").children[1]),
+	    "updated_image_3" => Common.exister(details.xpath("//images").xpath("image").xpath("url").children[2]),
+	    "updated_image_4" => Common.exister(details.xpath("//images").xpath("image").xpath("url").children[3]),
+	    "updated_image_5" => Common.exister(details.xpath("//images").xpath("image").xpath("url").children[4])
     )
   end
 end
