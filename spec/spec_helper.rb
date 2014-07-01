@@ -11,7 +11,9 @@ Dir[Rails.root.join("spec/factories/*.rb")].each { |f| require f }
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 RSpec.configure do |config|
+  config.include JsonSpec::Helpers
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include Requests::JsonHelpers, :type => :controller
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
   config.order = "random"

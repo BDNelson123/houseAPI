@@ -26,15 +26,15 @@ class HomesController < ApplicationController
       home = Home.home_joins.home_attributes.where(:id => params[:id], :active => true).group("homes.id, zillows.id")
     end
 
-    if home
-      render json: home
+    if home.blank?
+      render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity
     else
-      render json: { :errors => "This home was not found." }, :status => :unprocessable_entity
+      render json: home
     end
   end
 
   def update
-    home = Home.joins(:user).where(:id => params[:id], :auth_token => token_and_options(request)).first
+    home = Home.where(:id => params[:id], :user_id => User.user_id(token_and_options(request))).first
 
     if home.blank?
       render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity

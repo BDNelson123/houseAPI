@@ -18,6 +18,7 @@ group :test, :development do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'rest-client'
+  gem 'json_spec'
 end
 
 group :doc do
