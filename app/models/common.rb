@@ -40,4 +40,14 @@ class Common
       return :user_id
     end
   end
+
+  # model: images
+  # purpose: returns the correct foreign_key id for who owns the image
+  def self.klass_id(params,token_from_id)
+    if params[:klass] == 'home'
+      return params[:home_id]
+    elsif params[:klass] == 'user'
+      return token_from_id
+    end
+  end
 end

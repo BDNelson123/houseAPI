@@ -20,17 +20,15 @@ class ImagesController < ApplicationController
   end
 
   def update
-    if params[:klass] == 'user'
-      if Image.where(:klass => 'user', :user_id => params[:id], :primary => true).first
-        old_primary = Image.where(:klass => 'user', :user_id => User.user_id(token_and_options(request)), :primary => true).first.update(:primary => false)
-      end
-      new_primary = Image.where(:klass => 'user', :user_id => User.user_id(token_and_options(request)), :id => params[:id]).first.update(:primary => true)
+    if Image.where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id], :primary => true).first
+      old_primary = Image.where(:klass => params[:klass], Common.klass(params[:klass]) => Common.klass_id(params,User.user_id(token_and_options(request))), :primary => true).first.update(:primary => false)
+    end
+    new_primary = Image.where(:klass => params[:klass], Common.klass(params[:klass]) => Common.klass_id(params,User.user_id(token_and_options(request))), :id => params[:id]).first.update(:primary => true)
 
-      if new_primary
-        render json: new_primary, status: :created
-      else
-        render json: new_primary.errors, status: :unprocessable_entity
-      end
+    if new_primary
+      render json: new_primary, status: :created
+    else
+      render json: new_primary.errors, status: :unprocessable_entity
     end
   end
 
