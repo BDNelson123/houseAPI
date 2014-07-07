@@ -20,9 +20,7 @@ class ImagesController < ApplicationController
   end
 
   def update
-    if Image.where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id], :primary => true).first
-      old_primary = Image.where(:klass => params[:klass], Common.klass(params[:klass]) => Common.klass_id(params,User.user_id(token_and_options(request))), :primary => true).first.update(:primary => false)
-    end
+    old_primary = Image.where(:klass => params[:klass], Common.klass(params[:klass]) => Common.klass_id(params,User.user_id(token_and_options(request))), :primary => true).update_all(:primary => false)
     new_primary = Image.where(:klass => params[:klass], Common.klass(params[:klass]) => Common.klass_id(params,User.user_id(token_and_options(request))), :id => params[:id]).first.update(:primary => true)
 
     if new_primary

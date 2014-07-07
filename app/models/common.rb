@@ -50,4 +50,14 @@ class Common
       return token_from_id
     end
   end
+
+  # model: homes
+  # purpose: returns the user id from token if user_id is not present
+  def self.home_user(params,token_from_id)
+    if params
+      return params
+    else
+      return token_from_id
+    end
+  end
 end
