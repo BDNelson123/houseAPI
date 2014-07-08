@@ -40,7 +40,7 @@ class HomesController < ApplicationController
     if home.blank?
       render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity
     elsif home.update(home_params_update)
-      Log.home_update(User.user_id(token_and_options(request)),home.id,home.price)
+      Log.home_update(User.user_id(token_and_options(request)),home)
       render json: home, status: :created, id: home.id
     else
       render json: home.errors, status: :unprocessable_entity

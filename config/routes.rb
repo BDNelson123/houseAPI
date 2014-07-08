@@ -6,4 +6,5 @@ House::Application.routes.draw do
   resources :searches
   resources :bids
   resources :messages
+  resources :logs
 end
