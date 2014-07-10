@@ -9,7 +9,7 @@ class BidsController < ApplicationController
     bid.home_id = params["home_id"]
 
     if bid.save
-      Log.bid_create(bid.user_id,bid.home_id,params)
+      Log.bid_create(bid.user_id,params,Home.find(params["home_id"]))
       render json: bid, status: :created, id: bid.home_id
     else
       render json: bid.errors, status: :unprocessable_entity

@@ -1,6 +1,5 @@
 class LogsController < ApplicationController
   def show
-    log = Log.where(:user_id => params[:id]).order_by(:date.desc)
-    render json: log
+    render json: Log.where(:user_id => params[:id]).order_by(:date.desc)
   end
 end
