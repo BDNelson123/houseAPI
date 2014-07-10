@@ -13,6 +13,7 @@ class Log
   field :zip, :type => Integer
   field :price, :type => Integer
   field :date, :type => DateTime
+  field :bid_price, :type => BigDecimal
 
   def self.home_create(user_id,home_id,params)
     create(
@@ -43,6 +44,17 @@ class Log
       "state" => home.state,
       "zip" => home.zip,
       "price" => home.price
+    )
+  end
+
+  def self.bid_create(user_id,home_id,params)
+    create(
+      "user_id" => user_id,
+      "type" => "bid",
+      "action" => "create",
+      "date" => Time.now,
+      "home_id" => home_id,
+      "bid_price" => params[:bid][:price]
     )
   end
 end
