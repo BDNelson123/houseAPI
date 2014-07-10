@@ -40,5 +40,8 @@ class Home < ActiveRecord::Base
     "related_2_image_1","related_2_image_2","related_2_image_3","related_2_image_4","related_2_image_5",
     array_agg(images.image) AS images') 
   }
+
   scope :home_joins, -> { joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id") }
+
+  scope :home_joins_basic, -> { joins("LEFT JOIN images ON images.home_id = homes.id AND images.primary = true") }
 end
