@@ -1,8 +1,6 @@
 class ImagesController < ApplicationController
   respond_to :json
-
   include ActionController::HttpAuthentication::Token
-
   before_filter :restrict_access, :only => [:create, :delete, :update]
 
   def create
@@ -31,7 +29,11 @@ class ImagesController < ApplicationController
   end
 
   def index
-    render json: Image.where(:user_id => params[:id])
+    if params[:type] == 'message'
+      render json: Image.where(:primary => true).where("user_id IN (?)", eval(params['id']))
+    else
+      render json: Image.where(:user_id => params[:id])
+    end
   end
 
   def destroy
