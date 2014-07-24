@@ -30,6 +30,7 @@ class ImagesController < ApplicationController
 
   def index
     if params[:type] == 'message'
+      #render json: Image.joins(:user).select("images.*,users.firstname,users.lastname").where(:primary => true).where("user_id IN (?)", eval(params['id']))
       render json: Image.where(:primary => true).where("user_id IN (?)", eval(params['id']))
     else
       render json: Image.where(:user_id => params[:id])

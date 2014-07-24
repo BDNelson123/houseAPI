@@ -38,7 +38,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    render json: User.all
+    if params[:type] == 'message'
+      render json: User.select("id,firstname,lastname").where("id IN (?)", eval(params['id']))
+    else
+      render json: User.all
+    end
   end
 
   private
