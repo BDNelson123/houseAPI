@@ -40,7 +40,16 @@ class MessagesController < ApplicationController
           }
         }
       )
+    elsif params[:type] == 'single'
+      render json: Message.any_of(
+        {:sender_id => User.user_id(token_and_options(request)), :receiver_id => params[:user_id]}, 
+        {:sender_id => params[:user_id], :receiver_id => User.user_id(token_and_options(request))}
+      ).order_by("_id ASC")
     end
+  end
+
+  def show
+    render json: Message.where(:thread_id => params[:id])
   end
 
   private
