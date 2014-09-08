@@ -19,7 +19,6 @@ group :test, :development do
   gem 'shoulda-matchers', '2.6.0'
   gem 'rest-client', '1.6.7'
   gem 'json_spec', '1.1.2'
-  gem 'capybara', '2.2.1'
 end
 
 group :doc do
