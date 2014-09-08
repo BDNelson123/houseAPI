@@ -37,6 +37,12 @@ GEM
       bcrypt (>= 3.1.3)
     bson (2.3.0)
     builder (3.1.4)
+    capybara (2.2.1)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -142,26 +148,29 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.39)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bcrypt-ruby
-  carrierwave
-  factory_girl
-  faker
-  json_spec
-  mongoid
-  nokogiri
-  pg
-  rack-cors
+  bcrypt-ruby (= 3.1.5)
+  capybara (= 2.2.1)
+  carrierwave (= 0.10.0)
+  factory_girl (= 4.4.0)
+  faker (= 1.3.0)
+  json_spec (= 1.1.2)
+  mongoid (= 4.0.0)
+  nokogiri (= 1.6.1)
+  pg (= 0.17.1)
+  rack-cors (= 0.2.9)
   rails (= 4.0.3)
-  rails-api
-  rest-client
-  rmagick
-  rspec-rails
-  sdoc
-  shoulda-matchers
-  tenacity
+  rails-api (= 0.2.0)
+  rest-client (= 1.6.7)
+  rmagick (= 2.13.2)
+  rspec-rails (= 2.14.2)
+  sdoc (= 0.4.0)
+  shoulda-matchers (= 2.6.0)
+  tenacity (= 0.6.0)
   validates_email_format_of!
