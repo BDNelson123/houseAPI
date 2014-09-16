@@ -8,7 +8,7 @@ class HomesController < ApplicationController
     home.user_id = User.user_id(token_and_options(request))
 
     if Zillow.check(home_params) != 0
-      render json: { :errors => "This address could not be found in the MLS.  Please make sure you typed it in correctly." }, :status => :unprocessable_entity
+      render json: "This address could not be found in the MLS.  Please make sure you typed it in correctly.", :status => :unprocessable_entity
     else
       if home.save
         Log.home_create(home.user_id,home.id,home_params)
@@ -28,7 +28,7 @@ class HomesController < ApplicationController
     end
 
     if home.blank?
-      render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity
+      render json: "Permission Denied", :status => :unprocessable_entity
     else
       render json: home
     end
@@ -38,7 +38,7 @@ class HomesController < ApplicationController
     home = Home.where(:id => params[:id], :user_id => User.user_id(token_and_options(request))).first
 
     if home.blank?
-      render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity
+      render json: "Permission Denied", :status => :unprocessable_entity
     elsif home.update(home_params_update)
       Log.home_update(User.user_id(token_and_options(request)),home)
       render json: home, status: :created, id: home.id

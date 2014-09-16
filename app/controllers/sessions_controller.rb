@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       render json: user, auth_token: user.auth_token, id: user.id
     else
-      render json: { :errors => "Your credentials were not found.  Please try again" }, :status => :unprocessable_entity
+      render json: "Your credentials were not found.  Please try again", :status => :unprocessable_entity
     end
   end
 

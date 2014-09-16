@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     if user
       render json: user
     else
-      render json: { :errors => "This user was not found." }, :status => :unprocessable_entity
+      render json: "This user was not found.", :status => :unprocessable_entity
     end
   end
 
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     user = User.where(:id => params[:id], :auth_token => token_and_options(request)).first
 
     if user.blank?
-      render json: { :errors => "Permission Denied" }, :status => :unprocessable_entity
+      render json: "Permission Denied", :status => :unprocessable_entity
     elsif user.update(user_params)
       render json: user, status: :created, auth_token: user.auth_token
     else
