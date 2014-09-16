@@ -15,7 +15,7 @@ class HomesController < ApplicationController
         Zillow.createNew(home.user_id, home.id, home_params)
         render json: home, status: :created, id: home.id
       else
-        render json: home.errors, status: :unprocessable_entity
+        render json: home.errors.full_messages.to_sentence, status: :unprocessable_entity
       end
     end
   end
@@ -43,7 +43,7 @@ class HomesController < ApplicationController
       Log.home_update(User.user_id(token_and_options(request)),home)
       render json: home, status: :created, id: home.id
     else
-      render json: home.errors, status: :unprocessable_entity
+      render json: home.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
   end
 

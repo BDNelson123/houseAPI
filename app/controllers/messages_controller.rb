@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
     if message.save
       render json: message, status: :created, id: message.id
     else
-      render json: message.errors, status: :unprocessable_entity
+      render json: message.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
   end
 

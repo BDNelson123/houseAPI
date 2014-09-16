@@ -9,7 +9,7 @@ class ImagesController < ApplicationController
     if image.save
       render json: image, status: :created, image: image.image
     else
-      render json: image.errors, status: :unprocessable_entity
+      render json: image.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
   end
 
@@ -24,7 +24,7 @@ class ImagesController < ApplicationController
     if new_primary
       render json: new_primary, status: :created
     else
-      render json: new_primary.errors, status: :unprocessable_entity
+      render json: new_primary.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
   end
 

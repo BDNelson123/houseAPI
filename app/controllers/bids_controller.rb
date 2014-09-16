@@ -12,7 +12,7 @@ class BidsController < ApplicationController
       Log.bid_create(bid.user_id,params,Home.find(params["home_id"]))
       render json: bid, status: :created, id: bid.home_id
     else
-      render json: bid.errors, status: :unprocessable_entity
+      render json: bid.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
   end
 
