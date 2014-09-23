@@ -8,7 +8,20 @@ class Bid < ActiveRecord::Base
   validates :price, :presence => true
   validates :price, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => {:greater_than => 0}
 
-  scope :bid_attributes, -> { select('
+  scope :bid_show_attributes, -> { select('
+    bids.id as bids_id,
+    bids.user_id,
+    bids.home_id,
+    bids.price,
+    bids.created_at,
+    bids.updated_at,
+    users.firstname,
+    users.lastname,
+    users.email'
+    ) 
+  }
+
+  scope :bid_index_attributes, -> { select('
     homes.id as homes_id,
     homes.address,
     homes.address2,
