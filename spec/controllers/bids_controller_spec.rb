@@ -67,7 +67,7 @@ describe BidsController, :type => :api do
 
   #action: index
   describe "#index" do
-    it "" do
+    it "gets all the bids for a single house" do
       user = FactoryGirl.create(:user)
       home = FactoryGirl.create(:home)
       bid_1 = FactoryGirl.create(:bid, user_id: user.id, home_id: home.id)
