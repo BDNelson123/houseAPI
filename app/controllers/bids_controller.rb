@@ -17,11 +17,11 @@ class BidsController < ApplicationController
   end
 
   def show
-    render json: Bid.joins(:user).select("*").where(:home_id => params[:id])
+    render json: Bid.joins(:user).bid_show_attributes.where(:home_id => params[:id])
   end
 
   def index
-    render json: Bid.joins(:home).joins("LEFT JOIN images on images.home_id = bids.home_id").bid_attributes.where(:user_id => params[:user_id])
+    render json: Bid.joins(:home).joins("LEFT JOIN images on images.home_id = bids.home_id").bid_index_attributes.where(:user_id => params[:user_id])
   end
 
   private
