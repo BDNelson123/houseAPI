@@ -10,20 +10,26 @@ describe HomesController, :type => :api do
   end
 
   describe "#index" do
-    context "basic is false" do
+    context "basic param is false" do
       it "should return 1 total row" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
-        get :index, { 'user_id' => @user.id }
+        get :index, { 'user_id' => @user.id, 'basic' => 'false' }
         expect(JSON.parse(response.body).length).to eq(1)
       end
 
-      it "should return all zillow attributes such as yearBuilt (not basic)" do
+      it "should return all zillow attributes such as yearBuilt" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
         get :index, { 'user_id' => @user.id, 'basic' => 'false' }
         JSON.parse(response.body)[0].should include('yearBuilt')
       end
 
-      it "should return the correct value for yearBuilt if params[:basic] == false" do
+      it "should return images attribute" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        get :index, { 'user_id' => @user.id, 'basic' => 'false' }
+        JSON.parse(response.body)[0].should include('images')
+      end
+
+      it "should return the correct value for yearBuilt" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
         get :index, { 'user_id' => @user.id, 'basic' => 'false' }
         expect(JSON.parse(response.body)[0]['yearBuilt'].to_i).to eq(@zillow.yearBuilt.to_i)
@@ -32,6 +38,32 @@ describe HomesController, :type => :api do
       it "should return a response of 200" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
         get :index, { 'user_id' => @user.id, 'basic' => 'false' }
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context "basic param is true" do
+      it "should return 1 total row" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        get :index, { 'user_id' => @user.id, 'basic' => 'true' }
+        expect(JSON.parse(response.body).length).to eq(1)
+      end
+
+      it "should return images attribute" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        get :index, { 'user_id' => @user.id, 'basic' => 'true' }
+        JSON.parse(response.body)[0].should include('images')
+      end
+
+      it "should return an images " do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        get :index, { 'user_id' => @user.id, 'basic' => 'true' }
+        expect(response.status).to eq(200)
+      end
+
+      it "should return a response of 200" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        get :index, { 'user_id' => @user.id, 'basic' => 'true' }
         expect(response.status).to eq(200)
       end
     end
