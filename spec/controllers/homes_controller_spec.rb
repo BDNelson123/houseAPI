@@ -68,4 +68,8 @@ describe HomesController, :type => :api do
       end
     end
   end
+
+  describe "#show" do
+
+  end
 end

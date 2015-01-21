@@ -11,6 +11,7 @@ gem 'carrierwave', '0.10.0'
 gem 'rmagick', '2.13.2'
 gem 'nokogiri', '1.6.1', :require => true
 gem 'tenacity', '0.6.0'
+gem 'will_paginate', '3.0.5'
 
 group :test, :development do
   gem 'rspec-rails', '2.14.2'

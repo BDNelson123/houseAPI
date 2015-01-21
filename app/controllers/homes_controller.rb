@@ -49,7 +49,7 @@ class HomesController < ApplicationController
 
   def index
     if params[:basic] == 'true'
-      render json: Home.home_joins_basic.select("homes.*,array_agg(images.image) AS images").where(:user_id => Common.home_user(params[:user_id], User.user_id(token_and_options(request))), :active => true).group("homes.id").order(created_at: :desc)
+      render json: Home.home_joins_basic.home_joins_basic_select.where(:user_id => Common.home_user(params[:user_id], User.user_id(token_and_options(request))), :active => true).group("homes.id").order("homes.created_at DESC")
     else
       render json: Home.home_joins.home_attributes.where(:user_id => Common.home_user(params[:user_id], User.user_id(token_and_options(request))), :active => true).group("homes.id, zillows.id").order(created_at: :desc)
     end

@@ -1,5 +1,6 @@
 class Home < ActiveRecord::Base
   belongs_to :user
+  has_one :zillow
   has_many :images
   has_many :bids
 
@@ -41,7 +42,13 @@ class Home < ActiveRecord::Base
     array_agg(images.image) AS images') 
   }
 
+  scope :home_searches_select, -> { select("zillows.bedrooms,zillows.bathrooms,zillows.\"lotSizeSqFt\",zillows.\"finishedSqFt\",homes.*,images.image AS images") }
+
+  scope :home_searches_join, -> { joins("LEFT JOIN images ON images.home_id = homes.id AND images.primary = true INNER JOIN zillows on zillows.home_id = homes.id") }
+  
   scope :home_joins, -> { joins("LEFT JOIN images ON images.home_id = homes.id JOIN zillows ON zillows.home_id = homes.id") }
 
-  scope :home_joins_basic, -> { joins("LEFT JOIN images ON images.home_id = homes.id AND images.primary = true") }
+  scope :home_joins_basic, -> { joins("LEFT JOIN images ON images.home_id = homes.id AND images.primary = true LEFT JOIN bids on bids.home_id = homes.id") }
+
+  scope :home_joins_basic_select, -> { select("homes.*,array_agg(images.image) AS images,array_agg(bids.price) AS bidders") }
 end
