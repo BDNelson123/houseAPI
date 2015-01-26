@@ -73,13 +73,15 @@ describe HomesController, :type => :api do
 
   # SHOW action tests
   describe "#show" do
-    context "image param is false" do
-      it "should return a response of 200" do
+    context "check validity of user authentication" do
+      it "should return a response of 200 if logged in" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
         get :show, { 'id' => @home.id, 'user_id' => @user.id, 'image' => 'false' }
         expect(response.status).to eq(200)
       end
+    end
 
+    context "image param is false" do
       it "should return one home record with 11 attributes no images (no join)" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
         get :show, { 'id' => @home.id, 'user_id' => @user.id, 'image' => 'false' }
@@ -134,6 +136,11 @@ describe HomesController, :type => :api do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
       post :create, format: :json, :home => {address: "2517 53rd St.", address2: "", city: "Lubbock", state: "TX", zip: 79423, price: 1000}
       expect(response.status).to eq(201)
+    end
+
+    it "should NOT create one record in the database for home with a response of 401 due to not being logged in" do
+      post :create, format: :json, :home => {address: "2517 53rd St.", address2: "", city: "Lubbock", state: "TX", zip: 79423, price: 1000}
+      expect(response.status).to eq(401)
     end
 
     it "should create one record in the database for home" do
@@ -195,6 +202,55 @@ describe HomesController, :type => :api do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
         post :create, format: :json, :home => {address: "251734 53rd St.", address2: "", city: "tester", state: "TX", zip: 99999, price: 1000}
         response.body.should == "This address could not be found in the MLS.  Please make sure you typed it in correctly."
+      end
+    end
+  end
+
+  # UPDATE action tests
+  describe "#update" do
+    context "testing authentication - only logged in users can update a record" do
+      it "should return a response of 201 if user is logged in" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        put :update, format: :json, :id => @home.id, :home => {price: 12345}
+        expect(response.status).to eq(201)
+      end
+
+      it "should return a response of 401 if the user is NOT logged in" do
+        put :update, format: :json, :id => @home.id, :home => {price: 12345}
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context "testing if record was updated" do
+      it "should not update anything because only the price can be updated" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        before_address = @home.address
+        update = put :update, format: :json, :id => @home, :home => {address: "7615 Navarro Pl.", address2: "", city: "Austin", state: "TX", zip: 78749}
+        @home.reload
+        expect(@home.address).to eq(before_address)
+      end
+
+      it "should not add a new record since the record is being updated - and its updating attributes which can't be updated" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        update = put :update, format: :json, :id => @home, :home => {address: "7615 Navarro Pl.", address2: "", city: "Austin", state: "TX", zip: 78749}
+        @home.reload
+        expect {update}.to change(Home, :count).by(0)
+        expect {update}.to change(Zillow, :count).by(0)
+      end
+
+      it "should not add a new record since the record is being updated" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        update = put :update, format: :json, :id => @home, :home => {price: 12345}
+        @home.reload
+        expect {update}.to change(Home, :count).by(0)
+        expect {update}.to change(Zillow, :count).by(0)
+      end
+
+      it "should update the record with the correct new information" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
+        put :update, format: :json, :id => @home, :home => {price: 12345}
+        @home.reload
+        expect(@home.price.to_i).to eq(12345)
       end
     end
   end
