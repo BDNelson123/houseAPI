@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe Log do
-  pending "add some examples to (or delete) #{__FILE__}"
+  # No validations for log model, those are done in the models the log is created the record for
 end
