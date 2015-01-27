@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   has_many :bids
   has_secure_password
 
-  validates_email_format_of :email
   validates :email, :presence => true
+  validates_email_format_of :email
   validates_uniqueness_of :email
   validates_presence_of :password_digest, :on => :create 
 
