@@ -4,12 +4,13 @@ class Home < ActiveRecord::Base
   has_many :images
   has_many :bids
 
+  validates :user_id, :presence => true
   validates :address, :presence => true
   validates :city, :presence => true
   validates :state, :presence => true
-  validates :zip, :presence => true
-  validates :zip, numericality: { only_integer: true }
-  validates :price, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => {:greater_than => 0}
+  validates :zip, :presence => true, :numericality => {:only_integer => true}
+  validates :price, :presence => true, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => {:greater_than => 0}
+  validates :active, :presence => true
 
   scope :home_attributes, -> { select('
     homes.*, "zpid", "fipsCounty", "useCode", "taxAssessmentYear", "taxAssessment", "longitude", "latitude",
