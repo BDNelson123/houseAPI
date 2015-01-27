@@ -9,7 +9,7 @@ class Home < ActiveRecord::Base
   validates :city, :presence => true
   validates :state, :presence => true
   validates :zip, :presence => true, :numericality => {:only_integer => true}
-  validates :price, :presence => true, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => {:greater_than => 0}
+  validates :price, :presence => true, :format => { :with => /\A\d+(?:\.\d{0,2})?\z/ }, :numericality => true
   validates :active, :presence => true
 
   scope :home_attributes, -> { select('
