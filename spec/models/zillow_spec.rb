@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe Zillow do
-  pending "add some examples to (or delete) #{__FILE__}"
+  # not writing specs for this as it comes strait from zillow API which is already tested
 end
