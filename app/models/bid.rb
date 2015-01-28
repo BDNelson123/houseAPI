@@ -18,7 +18,7 @@ class Bid < ActiveRecord::Base
     users.firstname,
     users.lastname,
     users.email'
-    ) 
+    )
   }
 
   scope :bid_index_attributes, -> { select('
@@ -33,6 +33,6 @@ class Bid < ActiveRecord::Base
     bids.created_at as bids_created_at,
     images.image,
     images.home_id'
-    ) 
+    )
   }
 end

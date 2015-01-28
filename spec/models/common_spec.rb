@@ -62,12 +62,53 @@ describe Common do
       var = Common.klass("home")
       expect(var).to eq(:home_id)
     end
-  end
 
-  describe "klass" do
     it "should return user_id when attribute is user" do
       var = Common.klass("user")
       expect(var).to eq(:user_id)
+    end
+  end
+
+  describe "klass_id" do
+    context "klass param =  home" do
+      it "should return the home param" do
+        params = {:klass => "home", :home_id => 1}
+        expect(Common.klass_id(params,"1a2b3c4d5e6f7g")).to eq(1)
+      end
+
+      it "should not return the incorrect home param" do
+        params = {:klass => "home", :home_id => 1}
+        expect(Common.klass_id(params,"1a2b3c4d5e6f7g")).to_not eq(2)
+      end
+    end
+
+    context "klass param =  user" do
+      it "should return the correct user token" do
+        params = {:klass => "user", :home_id => 1}
+        expect(Common.klass_id(params,"1a2b3c4d5e6f7g")).to eq("1a2b3c4d5e6f7g")
+      end
+
+      it "should not return the incorrect user token" do
+        params = {:klass => "user", :home_id => 1}
+        expect(Common.klass_id(params,"1a2b3c4d5e6f7g")).to_not eq("test123test123")
+      end
+    end
+  end
+
+  describe "klass_id" do
+    it "should return the home param" do
+      params = {:klass => "home", :home_id => 1}
+      expect(Common.home_user(params,"1a2b3c4d5e6f7g")).to eq(params)
+    end
+
+    it "should return the correct user token" do
+      params = nil
+      expect(Common.home_user(params,"1a2b3c4d5e6f7g")).to eq("1a2b3c4d5e6f7g")
+    end
+
+    it "should not return the incorrect user token" do
+      params = nil
+      expect(Common.home_user(params,"1a2b3c4d5e6f7g")).to_not eq("test123test123")
     end
   end
 end
