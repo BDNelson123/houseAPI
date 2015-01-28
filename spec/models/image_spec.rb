@@ -26,4 +26,42 @@ describe Image do
       end
     end
   end
+
+  context "query" do
+    context "primary = true" do
+      context "klass = home" do
+        it "should return the correct query" do
+          image = Image.new(:image => fixture_file_upload('photos/test.jpg', 'image/jpg'), :user_id => 1, :home_id => 1, :klass => "home")
+          params = {:primary => "true", :klass => "home", :id => "1"}
+          expect(Image.query(params)).to eq(Image.where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id], :primary => true).first)
+        end
+      end
+
+      context "klass = user" do
+        it "should return the correct query" do
+          image = Image.new(:image => fixture_file_upload('photos/test.jpg', 'image/jpg'), :user_id => 1, :klass => "user")
+          params = {:primary => "true", :klass => "user", :id => "1"}
+          expect(Image.query(params)).to eq(Image.where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id], :primary => true).first)
+        end
+      end
+    end
+
+    context "primary = false" do
+      context "klass = home" do
+        it "should return the correct query" do
+          image = Image.new(:image => fixture_file_upload('photos/test.jpg', 'image/jpg'), :user_id => 1, :home_id => 1, :klass => "home")
+          params = {:primary => "false", :klass => "home", :id => "1"}
+          expect(Image.query(params)).to eq(Image.where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id]))
+        end
+      end
+
+      context "klass = user" do
+        it "should return the correct query" do
+          image = Image.new(:image => fixture_file_upload('photos/test.jpg', 'image/jpg'), :user_id => 1, :klass => "user")
+          params = {:primary => "false", :klass => "user", :id => "1"}
+          expect(Image.query(params)).to eq(Image.where(:klass => params[:klass], Common.klass(params[:klass]) => params[:id]))
+        end
+      end
+    end
+  end
 end
