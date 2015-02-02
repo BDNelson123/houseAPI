@@ -129,6 +129,79 @@ describe MessagesController do
 
         get :show, { :id => message1.thread_id }
         expect(JSON.parse(response.body).length).to eq(2)
+        expect(JSON.parse(response.body)[0]["message"]).to eq("This is a test.")
+        expect(JSON.parse(response.body)[1]["message"]).to eq("This is not a test.")
+      end
+    end
+  end
+
+  # INDEX action tests
+  describe "#index" do
+    before(:each) do
+      message1 = FactoryGirl.create(:message, :home_id => @home.id, :receiver_id => @user2.id, :sender_id => @user1.id )
+      message2 = FactoryGirl.create(:message, :home_id => @home.id, :receiver_id => @user2.id, :sender_id => @user1.id, :message => "This is not a test.")
+      message3 = FactoryGirl.create(:message, :home_id => @home.id, :receiver_id => @user3.id, :sender_id => @user1.id, :message => "This is not a test.", :thread_id => 2)
+      message4 = FactoryGirl.create(:message, :home_id => 123456789, :receiver_id => @user2.id, :sender_id => @user1.id )
+      message5 = FactoryGirl.create(:message, :home_id => 1234567890, :receiver_id => @user2.id, :sender_id => @user1.id )
+    end
+
+    context "authentication" do
+      it "should return a status of 401 as user is not logged in" do
+        get :index, { :user_id => @user2.id, :home_id => @home.id }
+        expect(response.status).to eq(401)
+      end
+
+      it "should return a status of 200 as user is logged in" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :user_id => @user2.id, :home_id => @home.id }
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context "messages of homes - i.e., home param exists" do
+      it "should return three messages for the home param" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :user_id => @user2.id, :home_id => @home.id }
+        expect(JSON.parse(response.body).length).to eq(2)
+      end
+
+      it "should return the correct values" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :user_id => @user2.id, :home_id => @home.id }
+        expect(JSON.parse(response.body)[0]["message"]).to eq("This is a test.")
+        expect(JSON.parse(response.body)[1]["message"]).to eq("This is not a test.")
+      end
+    end
+
+    context "all messages for a user - i.e., params[:type] == all" do
+      # it returns threads with last message, not all messages
+      # the user has one thread with user2 and one thread with user3
+      it "should return two threads" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :type => "all" }
+        pp JSON.parse(response.body)
+        expect(JSON.parse(response.body).length).to eq(2)
+      end
+
+      it "should return the correct values" do
+        # creating third thread, all of which should be returned
+        user4 = FactoryGirl.create(:user)
+        message6 = FactoryGirl.create(:message, :home_id => @home.id, :receiver_id => user4.id, :sender_id => @user1.id, :message => "This is still not a test.", :thread_id => 3)
+
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :type => "all" }
+        expect(JSON.parse(response.body).length).to eq(3)
+        expect(JSON.parse(response.body)[2]["message"]).to eq("This is a test.")
+        expect(JSON.parse(response.body)[1]["message"]).to eq("This is not a test.")
+        expect(JSON.parse(response.body)[0]["message"]).to eq("This is still not a test.")
+      end
+    end
+
+    context "shows messages between two users, not related to house" do
+      it "should return four messages for user 1" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :type => "single", :user_id => @user2.id }
+        expect(JSON.parse(response.body).length).to eq(4)
       end
     end
   end
