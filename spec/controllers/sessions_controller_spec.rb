@@ -9,6 +9,7 @@ describe SessionsController do
     User.destroy_all
   end
 
+  # SHOW action tests
   describe "#show" do
     context "correct login credentials" do
       it "should return the users information on a correct user login" do
