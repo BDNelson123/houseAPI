@@ -25,6 +25,8 @@ class UsersController < ApplicationController
     end
   end
 
+  # NOTE: :auth_token => token_and_options(request) -- makes sure that only the user signed in can update his/her profile
+  # NOTE CONTINUED: not anyone else's
   def update
     user = User.where(:id => params[:id], :auth_token => token_and_options(request)).first
 
@@ -49,7 +51,7 @@ class UsersController < ApplicationController
 
   def user_params
     _params = params.require(:user).permit(
-      :email, :password, :password_confirmation, :firstname, :lastname, :active, :id, :password_digest, :created_at, :updated_at, :auth_token
+      :email, :password, :password_confirmation, :firstname, :lastname
     )
   end
 end

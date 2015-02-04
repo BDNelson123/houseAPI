@@ -80,7 +80,6 @@ describe MessagesController do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
         post :create, format: :json, :message => { :receiver_id => @user2.id, :home_id => @home.id, :message => "This is a test." }
         expect(JSON.parse(response.body).length).to eq(6) # 6 fields for one none array
-        pp JSON.parse(response.body)
       end
     end
 
@@ -179,7 +178,6 @@ describe MessagesController do
       it "should return two threads" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
         get :index, { :type => "all" }
-        pp JSON.parse(response.body)
         expect(JSON.parse(response.body).length).to eq(2)
       end
 
