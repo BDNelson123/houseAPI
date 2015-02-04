@@ -3,11 +3,18 @@ include ActionDispatch::TestProcess
 
 describe HomesController, :type => :api do
   # creates the mocked records we need to run our tests
-  before(:all) do
+  before(:each) do
     @user = FactoryGirl.create(:user)
     @home = FactoryGirl.create(:home, user_id: @user.id)
     @image = FactoryGirl.create(:image, user_id: @user.id, home_id: @home.id)
     @zillow = FactoryGirl.create(:zillow, user_id: @user.id, home_id: @home.id)
+  end
+
+  after(:each) do
+    User.destroy_all
+    Home.destroy_all
+    Image.destroy_all
+    Zillow.destroy_all
   end
 
   # INDEX action tests

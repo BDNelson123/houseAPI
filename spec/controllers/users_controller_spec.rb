@@ -218,6 +218,13 @@ describe UsersController do
         expect(response.body).to eq("Email can't be blank and Email does not appear to be valid")
       end
 
+      it "should return an error if password is nil" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        put :update, format: :json, :id => @user1.id, :user => { :firstname => @firstname1, :lastname => @lastname1, :email => @email1, :password => nil, :password_confirmation => @password1 }
+        expect(response.status).to eq(422)
+        expect(response.body).to eq("Password can't be blank")
+      end
+
       it "should return an error if password does not match password_confirmation" do
         request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
         put :update, format: :json, :id => @user1.id, :user => { :firstname => @firstname1, :lastname => @lastname1, :email => @email1, :password => @password1, :password_confirmation => "Tester12345" }

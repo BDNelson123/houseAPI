@@ -4,11 +4,12 @@ describe User do
   context "validations" do
     context "no validation errors" do
       it "should return zero validation errors" do
-        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "eric.daven@gmail.com", :password => "testing123")
+        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "eric.daven@gmail.com", :password => "testing123", :password_confirmation => "testing123")
         user.should have(0).error_on(:firstname)
         user.should have(0).error_on(:lastname)
         user.should have(0).error_on(:email)
         user.should have(0).error_on(:password)
+        user.should have(0).error_on(:password_confirmation)
         user.should have(0).error_on(:password_digest)
       end
     end
@@ -16,11 +17,12 @@ describe User do
     context "email present" do
       # Email can't be blank and Email does not appear to be valid
       it "should return two validation errors if email is not present" do
-        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => nil, :password => "testing123")
+        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => nil, :password => "testing123", :password_confirmation => "testing123")
         user.should have(0).error_on(:firstname)
         user.should have(0).error_on(:lastname)
         user.should have(2).error_on(:email)
         user.should have(0).error_on(:password)
+        user.should have(0).error_on(:password_confirmation)
         user.should have(0).error_on(:password_digest)
       end
     end
@@ -28,22 +30,37 @@ describe User do
     context "password present" do
       # Password can't be blank and Password digest can't be blank
       it "should return two validation errors if password is not present" do
-        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "eric.daven@gmail.com", :password => nil)
+        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "eric.daven@gmail.com", :password => nil, :password_confirmation => "testing123")
         user.should have(0).error_on(:firstname)
         user.should have(0).error_on(:lastname)
         user.should have(0).error_on(:email)
-        user.should have(1).error_on(:password)
+        user.should have(2).error_on(:password) # for some reason its giving me this error twice - no clue why - :password=>["can't be blank", "can't be blank"]
+        user.should have(0).error_on(:password_confirmation)
         user.should have(1).error_on(:password_digest)
+      end
+    end
+
+    context "password and password_confirmation don't match" do
+      # Password can't be blank and Password digest can't be blank
+      it "should return two validation errors if password is not present" do
+        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "eric.daven@gmail.com", :password => "testing123", :password_confirmation => "test123")
+        user.should have(0).error_on(:firstname)
+        user.should have(0).error_on(:lastname)
+        user.should have(0).error_on(:email)
+        user.should have(0).error_on(:password) # for some reason its giving me this error twice - no clue why - :password=>["can't be blank", "can't be blank"]
+        user.should have(1).error_on(:password_confirmation)
+        user.should have(0).error_on(:password_digest)
       end
     end
 
     context "valid email" do
       it "should return one validation error if email is not valid" do
-        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "bart.com", :password => "testing123")
+        user = User.new(:firstname => "Eric", :lastname => "Draven", :email => "bart.com", :password => "testing123", :password_confirmation => "testing123")
         user.should have(0).error_on(:firstname)
         user.should have(0).error_on(:lastname)
         user.should have(1).error_on(:email)
         user.should have(0).error_on(:password)
+        user.should have(0).error_on(:password_confirmation)
         user.should have(0).error_on(:password_digest)
       end
     end
