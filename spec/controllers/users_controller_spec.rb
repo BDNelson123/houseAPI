@@ -260,5 +260,121 @@ describe UsersController do
         expect(response.body).to eq("Firstname can't be blank, Lastname can't be blank, Email can't be blank, Email does not appear to be valid, Password can't be blank, and Password confirmation can't be blank")
       end
     end
+  end  
+
+  # INDEX action tests
+  describe "#index" do
+    context "authentications" do
+      it "should return a status of 200 if logged in with type = message" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index, { :id => "[#{@user1.id},#{@user2.id}]", :type => "message" }
+        expect(response.status).to eq(200)
+      end
+
+      it "should return a status of 401 if not logged in with type = message" do
+        get :index, { :id => "[#{@user1.id},#{@user2.id}]", :type => "message" }
+        expect(response.status).to eq(401)
+      end
+
+      it "should return a status of 200 if logged in with type != message" do
+        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+        get :index
+        expect(response.status).to eq(200)
+      end
+
+      it "should return a status of 401 if not logged in with type != message" do
+        get :index
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context "type param equals message" do
+      context "return correct number of records" do
+        it "should return two records - one for each user in message conversation" do
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+          get :index, { :id => "[#{@user1.id},#{@user2.id}]", :type => "message" }
+          expect(JSON.parse(response.body).length).to eq(2)
+        end
+      end
+
+      context "return correct attributes" do
+        it "should return only three fields for each user" do
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+          get :index, { :id => "[#{@user1.id},#{@user2.id}]", :type => "message" }
+          response.body.should include("id")
+          response.body.should include("firstname")
+          response.body.should include("lastname")
+          response.body.should_not include("email")
+          response.body.should_not include("password_digest")
+          response.body.should_not include("created_at")
+          response.body.should_not include("updated_at")
+          response.body.should_not include("auth_token")
+          response.body.should_not include("active")
+        end
+      end
+
+      context "return correct values" do
+        it "should return the correct ids, firstnames, and lastnames for user1 and user2" do
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+          get :index, { :id => "[#{@user1.id},#{@user2.id}]", :type => "message" }
+          expect(JSON.parse(response.body)[0]["id"]).to eq(@user1.id)
+          expect(JSON.parse(response.body)[0]["firstname"]).to eq(@user1.firstname)
+          expect(JSON.parse(response.body)[0]["lastname"]).to eq(@user1.lastname)
+          expect(JSON.parse(response.body)[1]["id"]).to eq(@user2.id)
+          expect(JSON.parse(response.body)[1]["firstname"]).to eq(@user2.firstname)
+          expect(JSON.parse(response.body)[1]["lastname"]).to eq(@user2.lastname)
+        end
+      end
+    end
+
+    context "type param doesn't exist" do
+      context "return correct number of records" do
+        it "should return two records - one for each user in message conversation" do
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+          user3 = FactoryGirl.create(:user, :firstname => "Officer", :lastname => "Albricht", :email => "officer@albricht.com", :password => @password1, :password_confirmation => @password1, :auth_token => User.auth_token)
+          get :index
+          expect(JSON.parse(response.body).length).to eq(3)
+        end
+      end
+
+      context "return correct attributes" do
+        it "should return all fields for each user" do
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+          get :index
+          response.body.should include("id")
+          response.body.should include("firstname")
+          response.body.should include("lastname")
+          response.body.should include("email")
+          response.body.should include("password_digest")
+          response.body.should include("created_at")
+          response.body.should include("updated_at")
+          response.body.should include("auth_token")
+          response.body.should include("active")
+        end
+      end
+
+      context "return correct values" do
+        it "should return the correct ids, firstnames, and lastnames for user1 and user2" do
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.auth_token)
+          get :index
+
+          expect(JSON.parse(response.body)[0]["id"]).to eq(@user1.id)
+          expect(JSON.parse(response.body)[0]["firstname"]).to eq(@user1.firstname)
+          expect(JSON.parse(response.body)[0]["lastname"]).to eq(@user1.lastname)
+          expect(JSON.parse(response.body)[0]["email"]).to eq(@user1.email)
+          expect(JSON.parse(response.body)[0]["password_digest"]).to eq(@user1.password_digest)
+          expect(JSON.parse(response.body)[0]["auth_token"]).to eq(@user1.auth_token)
+          expect(JSON.parse(response.body)[0]["active"]).to eq(@user1.active)
+
+          expect(JSON.parse(response.body)[1]["id"]).to eq(@user2.id)
+          expect(JSON.parse(response.body)[1]["firstname"]).to eq(@user2.firstname)
+          expect(JSON.parse(response.body)[1]["lastname"]).to eq(@user2.lastname)
+          expect(JSON.parse(response.body)[1]["email"]).to eq(@user2.email)
+          expect(JSON.parse(response.body)[1]["password_digest"]).to eq(@user2.password_digest)
+          expect(JSON.parse(response.body)[1]["auth_token"]).to eq(@user2.auth_token)
+          expect(JSON.parse(response.body)[1]["active"]).to eq(@user2.active)
+        end
+      end
+    end
   end
 end
